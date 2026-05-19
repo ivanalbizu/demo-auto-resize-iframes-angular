@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demo Iframe - Contenido externo</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, sans-serif; padding: 1.5rem; background: #f8f9fa; color: #333; }
+    h2 { margin-bottom: 1rem; font-size: 1.25rem; }
+    p { margin-bottom: 1rem; line-height: 1.5; }
+    .form-group { margin-bottom: 1rem; }
+    label { display: block; font-weight: 600; margin-bottom: 0.25rem; }
+    select, input { width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px; font-size: 1rem; }
+    .extra-content { background: #fff3cd; border: 1px solid #ffc107; border-radius: 4px; padding: 1rem; margin-top: 1rem; display: none; }
+    .extra-content.is-visible { display: block; }
+    button { padding: 0.5rem 1rem; border: none; border-radius: 4px; font-size: 0.875rem; cursor: pointer; background: #ff7900; color: #fff; margin-top: 0.5rem; }
+    button:hover { background: #e56e00; }
+  </style>
+</head>
+<body>
+  <h2>Contenido del iframe</h2>
+  <p>Este contenido simula un recurso externo. El iframe se auto-redimensiona cuando cambia la altura del body.</p>
+
+  <div class="form-group">
+    <label for="demo-select">Selecciona un plan</label>
+    <select id="demo-select">
+      <option value="">-- Elige una opción --</option>
+      <option value="basico">Básico - 19,99€/mes</option>
+      <option value="estandar">Estándar - 29,99€/mes</option>
+      <option value="premium">Premium - 49,99€/mes</option>
+    </select>
+  </div>
+
+  <button type="button" id="demo-toggle">Mostrar más información</button>
+
+  <div class="extra-content" id="demo-extra">
+    <p><strong>Detalle adicional:</strong> Este bloque aparece dinámicamente y el iframe debería crecer para acomodarlo. ResizeObserver detecta este cambio automáticamente sin necesidad de listeners adicionales.</p>
+    <div class="form-group">
+      <label for="demo-input">Código promocional</label>
+      <input type="text" id="demo-input" placeholder="Introduce tu código" />
+    </div>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.</p>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- Auto-resize: copiar este script en el iframe -->
+  <!-- ============================================ -->
+  <script>
+    (function () {
+      // En producción, usar el origin real del padre: 'https://www.tusitio.es'
+      const PARENT_ORIGIN = '*';
+
+      function sendHeight() {
+        const height = document.body.scrollHeight;
+        window.parent.postMessage({ type: 'iframeHeight', height }, PARENT_ORIGIN);
+      }
+
+      // ResizeObserver: detecta CUALQUIER cambio de tamaño del body
+      const ro = new ResizeObserver(() => sendHeight());
+      ro.observe(document.body);
+
+      // Envío inicial tras carga completa
+      window.addEventListener('load', sendHeight);
+
+      // Responder a petición de altura del padre (ej: iframe en tab oculto que se muestra)
+      window.addEventListener('message', (e) => {
+        if (e.data && e.data.type === 'requestHeight') {
+          sendHeight();
+        }
+      });
+    })();
+  </script>
+
+  <!-- ============================================ -->
+  <!-- Demo: solo para pruebas, NO copiar           -->
+  <!-- ============================================ -->
+  <script>
+    document.getElementById('demo-toggle').addEventListener('click', function () {
+      const extra = document.getElementById('demo-extra');
+      extra.classList.toggle('is-visible');
+      this.textContent = extra.classList.contains('is-visible')
+        ? 'Ocultar información'
+        : 'Mostrar más información';
+    });
+  </script>
+</body>
+</html>

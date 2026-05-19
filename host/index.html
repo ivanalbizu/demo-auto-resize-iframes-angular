@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Demo auto-resize — anfitrión</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
+    h1, h2 { margin: 1.5rem 0 0.5rem; }
+    .filler { padding: 2rem; background: #f5f5f5; border-radius: 8px; margin: 1rem 0; }
+    iframe { border: 2px solid #ddd; border-radius: 8px; background: #fff; }
+    button { padding: 0.5rem 1rem; cursor: pointer; }
+    .tab-controls { display: flex; gap: 0.5rem; margin: 1rem 0; }
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+  </style>
+</head>
+<body>
+  <h1>Anfitrión — página HTML estática</h1>
+  <p>Esta página incrusta una app Angular en un iframe y aplica auto-resize.</p>
+
+  <div class="filler">Contenido de relleno antes del iframe (para tener algo que scrollear).</div>
+
+  <h2>Escenario A — iframe visible desde el inicio</h2>
+  <iframe
+    data-auto-resize
+    src="http://localhost:4200/"
+    width="100%"
+    height="200"
+    scrolling="no"
+    loading="lazy"
+    style="overflow:hidden; display:block;"
+    title="App Angular embebida"
+  ></iframe>
+
+  <h2>Escenario B — iframe dentro de un tab inicialmente oculto</h2>
+  <div class="tab-controls">
+    <button onclick="document.getElementById('tabB').classList.toggle('active')">
+      Toggle tab oculto
+    </button>
+  </div>
+  <div id="tabB" class="tab-pane">
+    <iframe
+      data-auto-resize
+      src="http://localhost:4200/"
+      width="100%"
+      height="200"
+      scrolling="no"
+      loading="lazy"
+      style="overflow:hidden; display:block;"
+      title="App Angular embebida en tab oculto"
+    ></iframe>
+  </div>
+
+  <div class="filler">Contenido de relleno después.</div>
+
+  <script src="./js/iframe-auto-resize.js"></script>
+</body>
+</html>

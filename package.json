@@ -1,0 +1,13 @@
+{
+  "name": "auto-resize-demo",
+  "private": true,
+  "scripts": {
+    "host": "npx http-server host -p 8080 -c-1",
+    "app": "cd iframe-app && npm start",
+    "dev": "npx concurrently \"npm:host\" \"npm:app\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0",
+    "http-server": "^14.0.0"
+  }
+}

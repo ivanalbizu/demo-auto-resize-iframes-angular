@@ -1,0 +1,14 @@
+<section class="nested-card">
+  <h4>Nivel hijo — app Angular dentro de otro iframe Angular</h4>
+  <p>
+    Usa el mismo <code>IframeAutoResizeService</code> que el nivel intermedio. Aquí el padre
+    no es el anfitrión HTML, sino el otro componente Angular.
+  </p>
+
+  <div class="actions">
+    <button (click)="addBlock()">Añadir bloque</button>
+    <button (click)="clear()">Limpiar</button>
+  </div>
+
+  <div *ngFor="let n of blocks" class="block">Bloque {{ n }}</div>
+</section>

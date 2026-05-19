@@ -1,0 +1,41 @@
+<section class="card">
+  <h2>App Angular embebida (nivel intermedio)</h2>
+  <p>El servicio observa el body con <code>ResizeObserver</code> y envía la altura al anfitrión HTML.</p>
+
+  <div class="actions">
+    <button (click)="toggleExtra()">{{ showExtra ? 'Ocultar' : 'Mostrar' }} contenido extra</button>
+    <button (click)="addItem()">Añadir item</button>
+    <button (click)="toggleNested()">{{ showNested ? 'Ocultar' : 'Mostrar' }} iframe anidado</button>
+    <button (click)="reset()">Reset</button>
+  </div>
+
+  <div *ngIf="showExtra" class="extra">
+    <p>Bloque adicional que aparece dinámicamente. El iframe debe crecer para acomodarlo.</p>
+    <p>Línea 2 del bloque extra.</p>
+    <p>Línea 3 del bloque extra.</p>
+  </div>
+
+  <ul *ngIf="items.length">
+    <li *ngFor="let item of items">{{ item }}</li>
+  </ul>
+
+  <div *ngIf="showNested" class="nested-wrapper">
+    <h3>Iframe anidado (nivel hijo)</h3>
+    <p>
+      Este iframe carga <code>/nested</code> dentro de la misma app Angular. La directiva
+      <code>appAutoResizeHost</code> escucha sus mensajes <code>iframeHeight</code> y le
+      pasa <code>requestHeight</code> cuando entra en viewport — la misma lógica que aplica
+      el anfitrión HTML, pero ejecutándose dentro de un componente Angular.
+    </p>
+    <iframe
+      [appAutoResizeHost]="nestedAllowedOrigins"
+      src="/nested"
+      width="100%"
+      height="120"
+      scrolling="no"
+      loading="lazy"
+      style="overflow:hidden; display:block; border:1px dashed #888; border-radius:6px;"
+      title="App Angular anidada"
+    ></iframe>
+  </div>
+</section>
