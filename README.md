@@ -4,6 +4,13 @@ Demo extremo a extremo del protocolo `iframeHeight` / `requestHeight` entre una 
 
 La guía canónica de diseño, protocolo y anti-patrones está en [CLAUDE.md](CLAUDE.md).
 
+> **Rama actual: `stackblitz`.** Esta rama tiene el resolutor dinámico de URL del iframe
+> ([host/js/iframe-src-resolver.js](host/js/iframe-src-resolver.js)) para funcionar en
+> StackBlitz / Codespaces / Gitpod, donde cada puerto vive en un subdominio distinto.
+> La rama `main` apunta a `http://localhost:4200` directamente.
+>
+> [![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/ivanalbizu/demo-auto-resize-iframes-angular/tree/stackblitz)
+
 ## Estructura
 
 ```

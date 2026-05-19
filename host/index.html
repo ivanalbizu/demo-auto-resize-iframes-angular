@@ -24,7 +24,7 @@
   <h2>Escenario A — iframe visible desde el inicio</h2>
   <iframe
     data-auto-resize
-    src="http://localhost:4200/"
+    data-iframe-src-port="4200"
     width="100%"
     height="200"
     scrolling="no"
@@ -42,7 +42,7 @@
   <div id="tabB" class="tab-pane">
     <iframe
       data-auto-resize
-      src="http://localhost:4200/"
+      data-iframe-src-port="4200"
       width="100%"
       height="200"
       scrolling="no"
@@ -54,6 +54,7 @@
 
   <div class="filler">Contenido de relleno después.</div>
 
+  <script src="./js/iframe-src-resolver.js"></script>
   <script src="./js/iframe-auto-resize.js"></script>
 </body>
 </html>

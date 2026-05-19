@@ -3,8 +3,9 @@
   "private": true,
   "scripts": {
     "host": "npx http-server host -p 8080 -c-1",
-    "app": "cd iframe-app && npm start",
-    "dev": "npx concurrently \"npm:host\" \"npm:app\""
+    "app": "cd iframe-app && npm install && npm start",
+    "dev": "npx concurrently \"npm:host\" \"npm:app\"",
+    "start": "npm run dev"
   },
   "devDependencies": {
     "concurrently": "^9.0.0",
