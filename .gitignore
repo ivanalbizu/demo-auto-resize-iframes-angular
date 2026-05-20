@@ -1,6 +1,11 @@
 # Dependencias
 node_modules/
 
+# Artefactos de build
+dist-app/
+dist-host/
+iframe-app/dist/
+
 # Logs
 npm-debug.log*
 yarn-debug.log*
