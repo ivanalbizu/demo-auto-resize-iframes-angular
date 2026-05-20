@@ -10,8 +10,18 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-echo "==> 1/3  Build Angular (iframe-app)"
-( cd iframe-app && npm run build )
+# Variables opcionales:
+#   BASE_HREF      → ruta donde se servirá la app Angular (con / finales).
+#                    Por defecto "/" (deploy en raíz). Ejemplo sub-path:
+#                    BASE_HREF=/experimentos/iframe/app/
+#   APP_BASE_URL   → URL absoluto del dist-app/ ya desplegado, que se inyecta
+#                    en dist-host/config.js. Si no se pasa, queda vacío y hay
+#                    que editar config.js a mano antes de subir dist-host/.
+BASE_HREF="${BASE_HREF:-/}"
+APP_BASE_URL="${APP_BASE_URL:-}"
+
+echo "==> 1/3  Build Angular (iframe-app) con base-href=${BASE_HREF}"
+( cd iframe-app && npm run build -- --base-href="${BASE_HREF}" )
 
 echo "==> 2/3  Stage dist-app/ desde iframe-app/dist/iframe-app/browser/"
 rm -rf dist-app
@@ -28,17 +38,17 @@ sed -i 's|src="http://localhost:4200/"|data-iframe-src-port="4200"|g' dist-host/
 # Inyecta config.js + resolver antes de iframe-auto-resize.js
 sed -i 's|<script src="./js/iframe-auto-resize.js"></script>|<script src="./config.js"></script>\n  <script src="./js/iframe-src-resolver.js"></script>\n  <script src="./js/iframe-auto-resize.js"></script>|' dist-host/index.html
 
-cat > dist-host/config.js <<'EOF'
+cat > dist-host/config.js <<EOF
 // ============================================================================
-// Editar esta línea con el URL ABSOLUTO donde has desplegado dist-app/.
+// URL ABSOLUTO donde se ha desplegado dist-app/. Sin trailing slash es OK.
 // Ejemplos:
 //   window.APP_BASE_URL = 'https://demo-app.vercel.app';
 //   window.APP_BASE_URL = 'https://user.github.io/iframe-app';
 //
-// Sin trailing slash es OK. En dev (localhost) déjalo vacío: el resolver
-// caerá al http://localhost:4200/ automáticamente.
+// En dev (localhost) déjalo vacío: el resolver cae a http://localhost:4200/.
+// Pasar APP_BASE_URL al script build-deploy.sh para inyectar automáticamente.
 // ============================================================================
-window.APP_BASE_URL = '';
+window.APP_BASE_URL = '${APP_BASE_URL}';
 EOF
 
 cat > dist-host/js/iframe-src-resolver.js <<'EOF'
