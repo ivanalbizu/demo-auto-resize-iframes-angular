@@ -10,15 +10,14 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-# Variables opcionales:
-#   BASE_HREF      → ruta donde se servirá la app Angular (con / finales).
-#                    Por defecto "/" (deploy en raíz). Ejemplo sub-path:
-#                    BASE_HREF=/experimentos/iframe/app/
-#   APP_BASE_URL   → URL absoluto del dist-app/ ya desplegado, que se inyecta
-#                    en dist-host/config.js. Si no se pasa, queda vacío y hay
-#                    que editar config.js a mano antes de subir dist-host/.
-BASE_HREF="${BASE_HREF:-/}"
-APP_BASE_URL="${APP_BASE_URL:-}"
+# Defaults del deploy. Editar aquí si cambia el sitio. Cualquier env var del
+# mismo nombre las sobreescribe sin tocar este fichero.
+#   BASE_HREF     → path donde se sirve la app Angular (con / finales).
+#                   Se usa para --base-href en ng build.
+#   APP_BASE_URL  → URL absoluto del mismo path, inyectado en dist-host/config.js
+#                   para que el host sepa adónde apunta el iframe.
+BASE_HREF="${BASE_HREF:-/experimentos/iframe/dist-app/}"
+APP_BASE_URL="${APP_BASE_URL:-https://ivanalbizu.eu/experimentos/iframe/dist-app}"
 
 echo "==> 1/3  Build Angular (iframe-app) con base-href=${BASE_HREF}"
 ( cd iframe-app && npm run build -- --base-href="${BASE_HREF}" )
